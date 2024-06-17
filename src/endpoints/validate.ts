@@ -1,7 +1,7 @@
 import jwt, {JwtPayload, VerifyCallback, VerifyErrors} from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from 'dotenv';
-import {refreshTokens} from "./index";
+import {refreshTokens} from "../index";
 
 config();
 

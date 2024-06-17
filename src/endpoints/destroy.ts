@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {refreshTokens} from "./index";
+import {refreshTokens} from "../index";
 
 export const destroy = (req: Request, res: Response): void => {
     const refreshToken = req.body.token;
