@@ -1,6 +1,6 @@
 # AuthServer
 
-AuthServer is a simple authentication server built with Node.js and Express.js. It provides endpoints for user authentication, token generation, token refreshing, and token invalidation.
+AuthServer is a simple authentication server built with Node.js, Express.js, and MongoDB. It provides endpoints for user authentication, token generation, token refreshing, and token invalidation.
 
 ## Features
 
@@ -65,16 +65,18 @@ AuthServer is a simple authentication server built with Node.js and Express.js. 
   
   ### Authentication Middleware:
   
-  You can protect routes by using the provided authentication middleware. Example usage:
+You can protect routes by using the provided authentication middleware. Example usage:
 
-  #### JavaScript:
     
-    const { authenticationMiddleware } = require('./middleware');
-    
-    app.get('/', authenticationMiddleware, (req, res) => {
-        // Handle protected route logic
-        res.json(posts.filter(post => post.username === req.user.name));
-    });
+```javascript
+const { authenticationMiddleware } = require('./middleware');
+
+app.get('/', authenticationMiddleware, (req, res) => {
+    // Handle protected route logic
+    res.json(posts.filter(post => post.username === req.user.name));
+});
+        
+   ```
 
 ## License
 
