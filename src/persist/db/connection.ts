@@ -1,6 +1,9 @@
 import {MongoClient, ServerApiVersion, Db} from 'mongodb';
+import {config} from "dotenv";
 
 const dbName = 'MyApp';
+
+config();
 
 const client = new MongoClient(process.env.URI!, {
     serverApi: {
