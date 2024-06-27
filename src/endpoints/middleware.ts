@@ -46,7 +46,10 @@ export function authenticationMiddleware(req: Request, res: Response, next: Next
             return;
         }
 
-        req.body.user = decoded as JwtPayload;
+        const payload = (decoded as JwtPayload);
+
+        req.body.username = payload.name;
+        req.body.login_access_level = payload.createdByLogin;
         next();
     });
 }
