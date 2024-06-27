@@ -39,6 +39,7 @@ AuthServer is a simple authentication server built with Node.js, Express.js, and
 
     Create a mongo collaction and add the connection string to the .env file under the name "URI"
 
+
 5. **Running in "dev" mode:**
  
     ```bash
@@ -62,6 +63,7 @@ AuthServer is a simple authentication server built with Node.js, Express.js, and
     POST /login: Authenticate user and generate tokens.
     POST /token: Refresh access token using refresh token.
     DELETE /logout: Invalidate refresh token.
+    GET /testing: Test a resource protected by middleware.
   
   ### Authentication Middleware:
   
