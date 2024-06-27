@@ -33,7 +33,12 @@ AuthServer is a simple authentication server built with Node.js, Express.js, and
 3. **Configure environment variables:**
 
     ```bash
-    node scripts/generateSecrets.js
+    cd scripts
+   ```
+   
+    ```bash
+    node generateSecrets.js
+   ```
 
 4. **Set up connection to MongoDB:**
 
