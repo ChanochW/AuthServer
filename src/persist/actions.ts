@@ -40,4 +40,62 @@ export const deleteUser = async (userId: string): Promise<ResObj> => {
     }
 };
 
+export const findUser = async (username: string) => {
+    try {
+        const db = await connectDB();
+
+        return await db.collection('Users').findOne({username});
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export const addNewRefreshToken = async (userId: ObjectId, refreshToken: string) => {
+    try {
+        const db = await connectDB();
+
+        return (await db.collection('RefreshTokens').insertOne({
+            userId: userId,
+            token: refreshToken,
+            createdAt: new Date(),
+        })).acknowledged;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+
+}
+
+export const findAndRemoveRefreshTokensByUserId = async (id: ObjectId) => {
+    try {
+        const db = await connectDB();
+        return (await db.collection('RefreshTokens').deleteMany({userId: id})).acknowledged;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export const checkForRefresh = async (token: string) => {
+    try {
+        const db = await connectDB();
+        return !!(await db.collection('RefreshTokens').findOne({token}));
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export const checkUserRefreshExists = async (userId: ObjectId, token: string) => {
+    try {
+        const db = await connectDB();
+
+        return !!(await db.collection('RefreshTokens').findOne({userId, token}));
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
 export type ResObj = {status: number, message: string}
