@@ -10,6 +10,10 @@ config();
 const app = express();
 const port = process.env.PORT;
 
+//TODO set up cors policy
+//TODO set up throttling for requests
+//TODO verify all the response codes.
+
 app.use(express.json());
 
 app.post('/create', newUser);
