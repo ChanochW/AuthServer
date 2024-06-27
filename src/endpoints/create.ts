@@ -1,8 +1,8 @@
 
 import { Request, Response } from 'express';
 import {addNewUser} from "../persist/actions";
-import {getKeys, UserTemplate} from "../types/UserTemplate";
-import {NameTemplate} from "../types/NameTemplate";
+import {UserTemplate} from "../types/UserTemplate";
+
 export const newUser = (req: Request, res: Response) => {
     let inputConfigError = false;
 
@@ -23,6 +23,6 @@ export const newUser = (req: Request, res: Response) => {
     }
 
     addNewUser(newUser)
-        .then((resp) => res.status(resp.status).json(resp.message))
-        .catch((error) => res.status(400).json(error.message));
+        .then((resp) => res.status(resp.status).json({message: resp.message}))
+        .catch((error) => res.status(400).json({message: error.message}));
 }
