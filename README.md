@@ -79,8 +79,12 @@ You can protect routes by using the provided authentication middleware. Example 
 const { authenticationMiddleware } = require('./middleware');
 
 app.get('/', authenticationMiddleware, (req, res) => {
+    /*A true value means that the auth token was password login generated,
+      a false value means that the token was generated with a refresh token*/
+    console.log(res.body.login_access_level);
+    
     // Handle protected route logic
-    res.json(posts.filter(post => post.username === req.user.name));
+    res.json(posts.filter(post => post.username === req.body.username));
 });
         
    ```
