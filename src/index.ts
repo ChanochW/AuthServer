@@ -1,11 +1,9 @@
 import express from 'express';
-import { login, refresh } from './endpoints/validate';
+import {generateAccessToken, login, refresh} from './endpoints/validate';
 import { destroy } from './endpoints/destroy';
 import { newUser } from './endpoints/create';
 import { config } from 'dotenv';
-import {UserTemplate} from "./types/UserTemplate";
-import {RoleTemplate} from "./types/RoleTemplate";
-import {addNewUser} from "./persist/actions";
+import {authenticationMiddleware} from "./endpoints/middleware";
 
 config();
 
@@ -14,39 +12,27 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-export let refreshTokens: string[] = [];
-
-
 app.post('/create', newUser);
 app.post('/login', login);
 app.post('/token', refresh);
 app.delete('/logout', destroy);
-app.get("/testing", (req, res) => {
-    const newUser: UserTemplate = {
-        email: "email@email.com",
-        name: {
-            prefix: "Mr.",
-            firstName: "Senior",
-            middleName: "Master",
-            lastName: "Tester",
-            suffix: "Sr."
-        },
-        otherAddresses: [],
-        passwordHash: "123",
-        paymentMethods: [],
-        primaryAddress: {
-            streetAddress: "7531 150th St.",
-            city: "Flushing",
-            state: "NY",
-            zip: 11367
-        },
-        role: RoleTemplate.SysAdmin,
-        username: "email@email.com"
-    };
-    addNewUser(newUser)
-        .then((resp) => console.log(resp))
-        .catch((error) => console.log(error));
-    res.json(process.env.URI)
+app.get("/testing", authenticationMiddleware, async (req, res) => {
+    const token1 = await generateAccessToken({name: "bob"});
+    const token2 = await generateAccessToken({name: "bob"});
+    const token3 = await generateAccessToken({name: "bob"});
+    const token4 = await generateAccessToken({name: "bob"});
+    const token5 = await generateAccessToken({name: "bob"});
+
+    console.log("Token 1:", token1);
+    console.log("Token 2:", token2);
+    console.log("Token 3:", token3);
+    console.log("Token 4:", token4);
+    console.log("Token 5:", token5);
+
+    res.json({
+        tokens: [token1, token2, token3, token4, token5],
+        secret: "Something really important!"
+    });
 });
 
 app.listen(port, () => {
