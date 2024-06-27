@@ -4,6 +4,10 @@ import {addNewUser} from "../persist/actions";
 import {UserTemplate} from "../types/UserTemplate";
 
 export const newUser = (req: Request, res: Response) => {
+    console.log("\nCreate request received.");
+
+    //TODO stop multiple users with same credentials
+
     let inputConfigError = false;
 
     const newUser: UserTemplate = {
@@ -18,6 +22,7 @@ export const newUser = (req: Request, res: Response) => {
     }
 
     if (inputConfigError) {
+        console.log("Input config error in the create request.")
         res.status(400).json("Input config error.");
         return;
     }

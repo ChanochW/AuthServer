@@ -16,11 +16,11 @@ const client = new MongoClient(process.env.URI!, {
 let db: Db;
 
 async function connectDB() {
-
     if (!db) {
+        console.log("Connecting to the database...")
         await client.connect();
         db = client.db(dbName);
-        console.log('Connected successfully to Database');
+        console.log('Connected successfully to the database.');
     }
     return db;
 }

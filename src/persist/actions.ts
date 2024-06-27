@@ -15,13 +15,19 @@ export const addNewUser = async (user: UserTemplate): Promise<ResObj> => {
 
         const newUser = new UserModel(user);
 
-        await db.collection('Users').insertOne(newUser);
+        const result = (await db.collection('Users').insertOne(newUser)).acknowledged;
 
-        //const insertedUser = await db.collection('users').findOne({ _id: result.insertedId });
-        //response.status(201).json(insertedUser);
-        return {status: 201, message: "User Added Successfully!"};
+        if (!result) {
+            const resp = {status: 400, message: "There was an issue adding the new user."};
+            console.warn(resp.message);
+            return resp;
+        }
+
+        const resp = {status: 201, message: "User Added Successfully!"};
+        console.log(resp.message);
+        return resp;
     } catch (error) {
-        console.error('Error while creating user:', error);
+        console.error('Error while creating user: ', error);
         return {status: 500, message: "An error occurred while creating the user."};
     }
 };

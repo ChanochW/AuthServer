@@ -2,9 +2,12 @@ import { Request, Response } from 'express';
 import {checkUserRefreshExists, findAndRemoveRefreshTokensByUserId, findUser} from "../persist/actions";
 
 export const destroy = async (req: Request, res: Response) => {
+    console.log("\nDestroy request received.");
+
     const refreshToken = req.body.token;
 
     if (!refreshToken) {
+        console.log("Rejected.");
         res.sendStatus(401);
         return;
     }
@@ -12,11 +15,13 @@ export const destroy = async (req: Request, res: Response) => {
     const foundUser = await findUser(req.body.username);
 
     if (!foundUser) {
+        console.log("Rejected.");
         res.status(400).json({ message: 'Cannot logout. There was no user found with the given credentials' });
         return;
     }
 
     if (!(await checkUserRefreshExists(foundUser["_id"], refreshToken))) {
+        console.log("Rejected.");
         res.status(400).json({
             message: "This user is already logged out."
         });
@@ -26,10 +31,13 @@ export const destroy = async (req: Request, res: Response) => {
     const response = await findAndRemoveRefreshTokensByUserId(foundUser["_id"]);
 
     if (!response) {
+        const message = "There was an issue logging out.";
+        console.warn(message);
         res.status(500).json({
-            message: "There was an issue logging out."
+            message
         });
     } else {
+        console.log("Destruction successful.")
         res.json({
             message: "Logout successful."
         });
