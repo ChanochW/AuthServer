@@ -13,6 +13,7 @@ const port = process.env.PORT;
 //TODO set up cors policy
 //TODO set up throttling for requests
 //TODO verify all the response codes.
+//TODO explore options for file based logging
 
 app.use(express.json());
 
