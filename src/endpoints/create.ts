@@ -1,12 +1,15 @@
 
 import { Request, Response } from 'express';
-import {addNewUser} from "../persist/actions";
+import {addNewUser, userAlreadyTaken} from "../persist/actions";
 import {UserTemplate} from "../types/UserTemplate";
 
-export const newUser = (req: Request, res: Response) => {
+export const newUser = async (req: Request, res: Response) => {
     console.log("\nCreate request received.");
 
-    //TODO stop multiple users with same credentials
+    if (await userAlreadyTaken(req.body.username)) {
+        res.status(409).json({message: "Username already exists."});
+        return;
+    }
 
     let inputConfigError = false;
 

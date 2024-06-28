@@ -32,6 +32,17 @@ export const addNewUser = async (user: UserTemplate): Promise<ResObj> => {
     }
 };
 
+export const userAlreadyTaken = async (username: string) => {
+    const db = await connectDB();
+    const existingUser = await db.collection('Users').findOne({ username });
+    if (existingUser) {
+        console.log("Username already taken.")
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export const deleteUser = async (userId: string): Promise<ResObj> => {
     try {
         const objId = new ObjectId(userId);
@@ -39,6 +50,10 @@ export const deleteUser = async (userId: string): Promise<ResObj> => {
         const db = await connectDB();
 
         const deletedUser = await db.collection('Users').findOneAndDelete({_id: objId.id});
+        console.log("Deleted user:");
+        console.log(deletedUser);
+        console.log("\n");
+
         return {status: 200, message: "User Removed Successfully!"};
     } catch (error) {
         console.error('Error while creating user:', error);
