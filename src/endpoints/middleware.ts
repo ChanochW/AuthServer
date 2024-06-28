@@ -26,14 +26,14 @@ config();
 export function authenticationMiddleware(req: Request, res: Response, next: NextFunction): void {
     console.log("\nAuthenticating with middleware.");
 
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers['Authorization'];
     if (!authHeader) {
         console.log("Access denied.");
         res.sendStatus(401);
         return;
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = typeof authHeader === "string" ? authHeader.split(' ')[1] : null;
     if (!token) {
         console.log("Access denied.");
         res.sendStatus(401);
