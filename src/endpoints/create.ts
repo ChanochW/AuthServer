@@ -29,5 +29,5 @@ export const newUser = (req: Request, res: Response) => {
 
     addNewUser(newUser)
         .then((resp) => res.status(resp.status).json({message: resp.message}))
-        .catch((error) => res.status(400).json({message: error.message}));
+        .catch((error) => res.status(500).json({message: error.message}));
 }

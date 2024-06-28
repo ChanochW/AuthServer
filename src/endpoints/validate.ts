@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
         if (!foundUser) {
             const message = 'There was no user found with the given credentials';
             console.log(message);
-            res.status(400).json({ message });
+            res.status(404).json({ message });
             return;
         }
 
@@ -32,7 +32,7 @@ export const login = async (req: Request, res: Response) => {
         if (!(foundUser["username"] === username && await bcrypt.compare(password, foundUser["passwordHash"]))) {
             const message = 'Invalid password credentials';
             console.log(message);
-            res.status(400).json({ message });
+            res.status(401).json({ message });
             return;
         }
 
@@ -67,13 +67,13 @@ export const refresh = async (req: Request, res: Response) => {
 
     if (!refreshToken) {
         console.log("Rejected.");
-        res.sendStatus(401);
+        res.sendStatus(400);
         return;
     }
 
     if (!(await checkForRefresh(refreshToken))) {
         console.log("Rejected.");
-        res.status(403).json({
+        res.status(401).json({
             message: "No such token found."
         });
         return;
@@ -83,7 +83,7 @@ export const refresh = async (req: Request, res: Response) => {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, async (error: VerifyErrors | null | boolean, decoded: JwtPayload | string | undefined) => {
         if (error) {
             console.log("Verification failed.")
-            res.status(403).json({
+            res.status(401).json({
                 message: "Could not verify refresh token."
             });
             return;

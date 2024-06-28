@@ -8,15 +8,23 @@ export const destroy = async (req: Request, res: Response) => {
 
     if (!refreshToken) {
         console.log("Rejected.");
-        res.sendStatus(401);
+        res.sendStatus(400);
         return;
     }
 
-    const foundUser = await findUser(req.body.username);
+    const username = req.body.username;
+
+    if (!username) {
+        console.log("Rejected.");
+        res.sendStatus(400);
+        return;
+    }
+
+    const foundUser = await findUser(username);
 
     if (!foundUser) {
         console.log("Rejected.");
-        res.status(400).json({ message: 'Cannot logout. There was no user found with the given credentials' });
+        res.status(404).json({ message: 'Cannot logout. There was no user found with the given credentials' });
         return;
     }
 

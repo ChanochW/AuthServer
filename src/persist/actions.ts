@@ -18,7 +18,7 @@ export const addNewUser = async (user: UserTemplate): Promise<ResObj> => {
         const result = (await db.collection('Users').insertOne(newUser)).acknowledged;
 
         if (!result) {
-            const resp = {status: 400, message: "There was an issue adding the new user."};
+            const resp = {status: 500, message: "There was an issue adding the new user."};
             console.warn(resp.message);
             return resp;
         }
@@ -38,8 +38,8 @@ export const deleteUser = async (userId: string): Promise<ResObj> => {
 
         const db = await connectDB();
 
-        const insertedUser = await db.collection('Users').findOneAndDelete({_id: objId.id});
-        return {status: 201, message: "User Removed Successfully!"};
+        const deletedUser = await db.collection('Users').findOneAndDelete({_id: objId.id});
+        return {status: 200, message: "User Removed Successfully!"};
     } catch (error) {
         console.error('Error while creating user:', error);
         return {status: 500, message: "An error occurred while creating the user."};
