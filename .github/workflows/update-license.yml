@@ -2,7 +2,7 @@ name: Update LICENSE
 
 on:
   schedule:
-    - cron: '/5 * * * *' # Runs every year on January 1st at 12 AM
+    - cron: '*/5 * * * *' # Runs every year on January 1st at 12 AM
   workflow_dispatch: # Allows manual triggering of the workflow
 
 permissions:
