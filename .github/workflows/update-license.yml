@@ -5,6 +5,9 @@ on:
     - cron: '0 0 1 1 *' # Runs every year on January 1st at 12 AM
   workflow_dispatch: # Allows manual triggering of the workflow
 
+permissions:
+  contents: write # Ensures GITHUB_TOKEN has write permissions to push changes
+
 jobs:
   update-license:
     runs-on: ubuntu-latest
