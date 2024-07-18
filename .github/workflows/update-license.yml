@@ -1,0 +1,33 @@
+# .github/workflows/update-readme.yml
+name: Update LICENSE
+
+on:
+  schedule:
+    - cron: '0 0 1 1 *' # Runs every year on January 1st at 12 AM
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  update-license:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'node'
+
+      - name: Run update script
+        run: node update-license.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add LICENSE
+          git commit -m 'Update LICENSE with current date'
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
