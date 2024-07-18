@@ -20,7 +20,10 @@ jobs:
           node-version: '18'
 
       - name: Run update script
-        run: node update-license.js
+        run: |
+          cd .github/workflows
+          node update-license.js
+          cd ../../
 
       - name: Commit changes
         run: |
