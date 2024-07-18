@@ -24,13 +24,24 @@ jobs:
           cd .github/workflows
           node update-license.js
           cd ../../
+          
+      - name: Check for changes
+        id: check-changes
+        run: |
+          git add LICENSE
+          git diff --cached --exit-code || echo "changes detected" > has_changes.txt
+
+      - name: Set output
+        id: set-output
+        run: echo "::set-output name=has_changes::$(if [ -f has_changes.txt ]; then echo true; else echo false; fi)"
+        shell: bash
 
       - name: Commit changes
+        if: steps.set-output.outputs.has_changes == 'true'
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add LICENSE
-          git commit -m 'Update LICENSE with current date'
+          git commit -m 'Update LICENSE with current year'
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
